@@ -1,10 +1,13 @@
 package com.rest.pokedex.services;
 
 import java.util.List;
+import java.util.Optional;
 
+import org.springframework.beans.BeanUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import com.rest.pokedex.exceptions.PokemonNotFoundException;
 import com.rest.pokedex.models.Pokemon;
 import com.rest.pokedex.repositories.PokemonRepository;
 
@@ -18,8 +21,32 @@ public class PokemonService {
 		return pokemonRepository.save(pokemon);
 	}
 	
+	public Pokemon buscarPorNumero(Integer numero) throws PokemonNotFoundException {
+		Optional<Pokemon> opt = pokemonRepository.findById(numero);
+		
+		if (opt.isPresent()) {
+			return opt.get();
+		} else {
+			throw new PokemonNotFoundException("Pokemon com número " + numero + " não encontrado");
+		}
+	}
+	
+	public Pokemon alterarVisto(Integer numero, Pokemon pokemon) throws PokemonNotFoundException {
+		Pokemon pokemonSalvo = buscarPorNumero(numero);
+		pokemonSalvo.setNome(pokemon.getNome());
+		pokemonSalvo.setImagemUrl(pokemon.getImagemUrl());
+		pokemonSalvo.setHabitat(pokemon.getHabitat());
+		return pokemonRepository.save(pokemonSalvo);
+	}
+	
+	public Pokemon alterarCapturado(Integer numero, Pokemon pokemon) throws PokemonNotFoundException {
+		Pokemon pokemonSalvo = buscarPorNumero(numero);
+		BeanUtils.copyProperties(pokemon, pokemonSalvo, "numero");
+		return pokemonRepository.save(pokemonSalvo);
+	}
+	
 	public List<Pokemon> buscarTodos() {
 		return pokemonRepository.findAll();
 	}
-	
+
 }

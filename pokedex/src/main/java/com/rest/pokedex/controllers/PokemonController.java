@@ -6,7 +6,9 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
@@ -16,6 +18,7 @@ import com.rest.pokedex.dtos.PokemonCapturadoResponse;
 import com.rest.pokedex.dtos.PokemonVistoRequest;
 import com.rest.pokedex.dtos.PokemonVistoResponse;
 import com.rest.pokedex.dtos.mappers.PokemonMapper;
+import com.rest.pokedex.exceptions.PokemonNotFoundException;
 import com.rest.pokedex.models.Pokemon;
 import com.rest.pokedex.services.PokemonService;
 
@@ -46,7 +49,26 @@ public class PokemonController {
 		PokemonCapturadoResponse pokemonCapturadoResponse = pokemonMapper.capturadoToDTO(pokemonSalvo);
 		return ResponseEntity.status(HttpStatus.CREATED).body(pokemonCapturadoResponse);
 	}
-
+	
+	@PutMapping("vistos/{id}")
+	public ResponseEntity<Object> alterarVisto(@PathVariable(value = "id") Integer numero, 
+		@RequestBody @Valid PokemonVistoRequest pokemonVistoRequest) throws PokemonNotFoundException {
+		Pokemon pokemon = pokemonMapper.vistoToEntity(pokemonVistoRequest);
+		Pokemon pokemonGravado = pokemonService.alterarVisto(numero, pokemon);
+		PokemonVistoResponse pokemonVistoResponse = pokemonMapper.vistoToDTO(pokemonGravado);
+		return ResponseEntity.status(HttpStatus.OK).body(pokemonVistoResponse);
+	}
+	
+	@PutMapping("capturados/{id}")
+	public ResponseEntity<Object> alterarCapturado(@PathVariable(value = "id") Integer numero, 
+		@RequestBody @Valid PokemonCapturadoRequest pokemonCapturadoRequest) throws PokemonNotFoundException {
+		Pokemon pokemon = pokemonMapper.capturadoToEntity(pokemonCapturadoRequest);
+		Pokemon pokemonGravado = pokemonService.alterarCapturado(numero, pokemon);
+		PokemonCapturadoResponse pokemonCapturadoResponse = pokemonMapper.capturadoToDTO(pokemonGravado);
+		return ResponseEntity.status(HttpStatus.OK).body(pokemonCapturadoResponse);
+	}
+	
+	// TODO: alterar para retornar lista de PokemonSummary
 	@GetMapping("/vistos")
 	public ResponseEntity<List<PokemonVistoResponse>> buscarTodosVistos() {
 		List<Pokemon> pokemon = pokemonService.buscarTodos(); 
