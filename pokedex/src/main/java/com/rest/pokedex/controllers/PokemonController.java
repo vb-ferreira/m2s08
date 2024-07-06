@@ -60,6 +60,13 @@ public class PokemonController {
 		return ResponseEntity.status(HttpStatus.OK).body(pokemonVistoResponse);
 	}
 	
+	@GetMapping("/{id}")
+	public ResponseEntity<Object> buscarUm(@PathVariable(value = "id") Integer numero) throws PokemonNotFoundException {
+		Pokemon pokemonSalvo = pokemonService.buscarPorNumero(numero);
+		PokemonCapturadoResponse pokemonResponse = pokemonMapper.capturadoToDTO(pokemonSalvo);
+		return ResponseEntity.status(HttpStatus.OK).body(pokemonResponse);
+	}
+	
 	@PutMapping("capturados/{id}")
 	public ResponseEntity<Object> alterarCapturado(@PathVariable(value = "id") Integer numero, 
 		@RequestBody @Valid PokemonCapturadoRequest pokemonCapturadoRequest) throws PokemonNotFoundException {
