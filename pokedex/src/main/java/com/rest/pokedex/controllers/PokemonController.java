@@ -16,6 +16,7 @@ import org.springframework.web.bind.annotation.RestController;
 
 import com.rest.pokedex.dtos.PokemonCapturadoRequest;
 import com.rest.pokedex.dtos.PokemonCapturadoResponse;
+import com.rest.pokedex.dtos.PokemonSummary;
 import com.rest.pokedex.dtos.PokemonVistoRequest;
 import com.rest.pokedex.dtos.PokemonVistoResponse;
 import com.rest.pokedex.dtos.mappers.PokemonMapper;
@@ -82,12 +83,11 @@ public class PokemonController {
 		return ResponseEntity.status(HttpStatus.OK).body("Pokemon removido com sucesso");
 	}
 	
-	// TODO: alterar para retornar lista de PokemonSummary
-	@GetMapping("/vistos")
-	public ResponseEntity<List<PokemonVistoResponse>> buscarTodosVistos() {
+	@GetMapping
+	public ResponseEntity<List<PokemonSummary>> buscarTodos() {
 		List<Pokemon> pokemon = pokemonService.buscarTodos(); 
-		List<PokemonVistoResponse> pokemonVistoResponse = pokemonMapper.vistosToDTO(pokemon);
-		return ResponseEntity.status(HttpStatus.OK).body(pokemonVistoResponse);
+		List<PokemonSummary> pokemonSummary = pokemonMapper.resumosToDTO(pokemon);
+		return ResponseEntity.status(HttpStatus.OK).body(pokemonSummary);
 	}
 	
 }

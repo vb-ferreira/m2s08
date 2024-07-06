@@ -9,6 +9,7 @@ import org.springframework.stereotype.Component;
 
 import com.rest.pokedex.dtos.PokemonCapturadoRequest;
 import com.rest.pokedex.dtos.PokemonCapturadoResponse;
+import com.rest.pokedex.dtos.PokemonSummary;
 import com.rest.pokedex.dtos.PokemonVistoRequest;
 import com.rest.pokedex.dtos.PokemonVistoResponse;
 import com.rest.pokedex.models.Pokemon;
@@ -35,6 +36,11 @@ public class PokemonMapper {
 		return dto;
 	}
 	
+	public PokemonSummary resumoToDTO(Pokemon entity) {
+		PokemonSummary dto = mapper.map(entity, PokemonSummary.class);
+		return dto;
+	}
+	
 	public PokemonVistoResponse vistoToDTO(Pokemon entity) {
 		PokemonVistoResponse dto = mapper.map(entity, PokemonVistoResponse.class);
 		return dto;
@@ -47,9 +53,9 @@ public class PokemonMapper {
 				.collect(Collectors.toList());
 	}
 
-	public List<PokemonCapturadoResponse> capturadosToDTO(List<Pokemon> pokemonList) {
+	public List<PokemonSummary> resumosToDTO(List<Pokemon> pokemonList) {
 		return pokemonList.stream()
-				.map(pokemon -> capturadoToDTO(pokemon))
+				.map(pokemon -> resumoToDTO(pokemon))
 				.collect(Collectors.toList());
 	}
 
