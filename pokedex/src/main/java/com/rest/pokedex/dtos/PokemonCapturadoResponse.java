@@ -1,12 +1,14 @@
 package com.rest.pokedex.dtos;
 
+import com.rest.pokedex.enums.TipoEnum;
+
 public class PokemonCapturadoResponse {
 
 	private int numero;
 	private String nome;
 	private String descricao;
 	private String imagemUrl;
-	private String tipo;
+	private TipoEnum tipo;
 	private String categoria;
 	private String habitat;
 	private Double altura;
@@ -44,11 +46,11 @@ public class PokemonCapturadoResponse {
 		this.imagemUrl = imagemUrl;
 	}
 	
-	public String getTipo() {
+	public TipoEnum getTipo() {
 		return tipo;
 	}
 	
-	public void setTipo(String tipo) {
+	public void setTipo(TipoEnum tipo) {
 		this.tipo = tipo;
 	}
 	

@@ -1,5 +1,7 @@
 package com.rest.pokedex.dtos;
 
+import com.rest.pokedex.enums.TipoEnum;
+
 import jakarta.validation.constraints.NotBlank;
 import jakarta.validation.constraints.NotNull;
 
@@ -9,7 +11,7 @@ public class PokemonCapturadoRequest {
 	  @NotBlank private String nome;
 	  @NotBlank private String descricao;
 	  @NotBlank private String imagemUrl;
-	  @NotBlank private String tipo;
+	  @NotBlank private TipoEnum tipo;
 	  @NotBlank private String categoria;
 	  @NotBlank private String habitat;
 	  @NotNull private Double altura;
@@ -48,11 +50,11 @@ public class PokemonCapturadoRequest {
 	    this.imagemUrl = imagemUrl;
 	  }
 
-	  public @NotBlank String getTipo() {
+	  public @NotBlank TipoEnum getTipo() {
 	    return tipo;
 	  }
 
-	  public void setTipo(@NotBlank String tipo) {
+	  public void setTipo(@NotBlank TipoEnum tipo) {
 	    this.tipo = tipo;
 	  }
 
