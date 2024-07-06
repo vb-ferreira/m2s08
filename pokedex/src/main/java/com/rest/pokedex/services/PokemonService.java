@@ -5,6 +5,7 @@ import java.util.Optional;
 
 import org.springframework.beans.BeanUtils;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.dao.DuplicateKeyException;
 import org.springframework.stereotype.Service;
 
 import com.rest.pokedex.exceptions.PokemonNotFoundException;
@@ -17,7 +18,12 @@ public class PokemonService {
 	@Autowired
 	private PokemonRepository pokemonRepository;
 	
-	public Pokemon salvar(Pokemon pokemon) {
+	public Pokemon salvar(Pokemon pokemon) throws DuplicateKeyException {
+		
+		if (pokemonRepository.existsById(pokemon.getNumero())) {
+			throw new DuplicateKeyException("Já existe um pokemon com esse número");
+		}
+		
 		return pokemonRepository.save(pokemon);
 	}
 	
