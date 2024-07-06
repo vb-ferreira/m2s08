@@ -45,6 +45,11 @@ public class PokemonService {
 		return pokemonRepository.save(pokemonSalvo);
 	}
 	
+	public void apagar(Integer numero) throws PokemonNotFoundException {
+		Pokemon pokemon = buscarPorNumero(numero);
+		pokemonRepository.delete(pokemon);
+	}
+	
 	public List<Pokemon> buscarTodos() {
 		return pokemonRepository.findAll();
 	}
